@@ -1,0 +1,23 @@
+block('progressbar')(
+
+    def()(function() {
+        var progress = this.ctx.progress,
+            num = isNaN(+progress)? 0 : progress < 0? 0 : progress > 100? 100 : progress;
+
+        applyNext({ _progress : num });
+    }),
+
+    js()(function(){
+        return { progress : this._progress };
+    }),
+
+    content()(function() {
+        return {
+            elem : 'box',
+            content : {
+                elem : 'bar',
+                attrs : { style : 'width:' + (this._progress > 0? this._progress + '%' : 0) }
+            }
+        };
+    })
+);
