@@ -1,256 +1,275 @@
 # input
 
-Блок `input` служит для создания различных типов текстовых полей:
+Используется для создания различных типов текстовых полей.
 
-* поле ввода (значение по умолчанию);
-* текстовая область;
-* поле для ввода пароля;
-* поисковая форма.
+## Краткая информация
 
-## Специализированные поля блока
+### Модификаторы блока
 
-Список зарезервированных полей входного BEMJSON:
+| Модификатор | Допустимые значения | Способы использования | Описание |
+| ----------- | ------------------- | -------------------- | -------- |
+| <a href=#type>type</a> | <code>'password'</code>, <code>'search'</code> | <code>BEMJSON</code> | Тип текстового поля. |
+| <a href=#disabled>disabled</a> | <code>true</code> | <code>BEMJSON</code>, <code>JS</code> | Неактивное состояние. |
+| <a href=#focused>focused</a> | <code>true</code> | <code>BEMJSON</code>, <code>JS</code> | Фокус на блоке. |
+| <a href=#size>size</a> | <code>'s'</code>, <code>'m'</code>, <code>'l'</code>, <code>'xl'</code> | <code>BEMJSON</code> | Размер текстового поля. Используется только с модификатором <a href=#theme>theme в значении islands</a>.|
+| <a href=#theme>theme</a> | <code>'islands'</code> | <code>BEMJSON</code> | Стилевое оформление. |
 
-<table>
-    <tr>
-        <th>Поле</th>
-        <th>Тип</th>
-        <th>Описание</th>
-    </tr>
-    <tr>
-        <td>val</td>
-        <td>
-            <code>String</code>
-        </td>
-        <td>Определяет значение (по умолчанию пустое), которое будет отправлено на сервер или получено с помощью клиентских скриптов. На сервер отправляется пара «имя=значение», где имя задается ключом <code>name</code>, а значение — ключом <code>val</code>.</td>
-    </tr>
-    <tr>
-        <td>name</td>
-        <td>
-            <code>String</code>
-        </td>
-        <td>Имя поля ввода, предназначено для того, чтобы обработчик формы мог его идентифицировать.
-            <br>Преобразуется в HTML-атрибут <code>name</code> вложенного блока <code>input</code>.</td>
-    </tr>
-    <tr>
-        <td>placeholder</td>
-        <td>
-            <code>String</code>
-        </td>
-        <td>Подсказка в поле ввода.</td>
-    </tr>
-    <tr>
-        <td>id</td>
-        <td>
-            <code>String</code>
-        </td>
-        <td>Уникальный идентификатор блока. Задается вручную. Преобразуется в HTML-атрибут <code>id</code> вложенного блока <code>input</code>.</td>
-    </tr>
+### Специализированные поля блока
 
-    <tr>
-        <td>maxLength</td>
-        <td>
-            <code>String</code>
-        </td>
-        <td>Определяет максимальное количество вводимых символов.</td>
-    </tr>
-    <tr>
-        <td>tabIndex</td>
-        <td>
-            <code>String</code>
-        </td>
-        <td>Определяет последовательность перехода между полями ввода при нажатии на `Tab`.</td>
-    </tr>
-</table>
+| Поле | Тип | Описание |
+| ---- | --- | -------- |
+| <a href=#name>name</a> | <code>String</code> | Имя текстового поля. |
+| <a href=#val>val</a> | <code>String</code> | Значение, отправляемое на сервер. |
+| <a href=#placeholder>placeholder</a> | <code>String</code> | Подсказка в текстовом поле. |
+| <a href=#maxLength>maxLength</a> | <code>String</code> | Максимальное количество вводимых символов. Используется только для <a href="#inputfield">полей ввода</a>. |
+| <a href=#autocomplete>autocomplete</a> | <code>Boolean</code> | Браузерное автозаполнение в текстовом поле. |
+| <a href=#id>id</a> | <code>String</code> | Уникальный идентификатор текстового поля. |
+| <a href=#tab>tabIndex</a> | <code>Number</code> | Последовательность перехода между текстовыми полями при нажатии на <code>Tab</code>. |
 
-При необходимости дополнительные HTML-атрибуты блока могут быть заданы в зарезервированном поле `attrs` в BEMJSON.
+## Обзор блока
 
-## Модификаторы блока
+Блок `input` служит для создания различных типов текстовых полей.
 
-### Темы `_theme`
+### Модификаторы блока
 
-Блок представлен в следующих темах:
+<a name="type"></a>
+#### Модификатор `type`
 
- * simple
- * islands (**Важно:** При выборе темы `islands` необходимо указывать обязательный модификатор [size](#size).)
+Допустимые значения: `'password'`, `'search'`.
 
-Без указания модификатора `theme` отображается [нативный](#native) вид контрола.
+Способ использования: `BEMJSON`.
 
-Наглядно показано на примерах ниже:
+Модификатор `type` используется для изменения типа текстового поля.
 
-<a name="native"></a>
-**default**
+<a name="inputfield"></a>
+Если модификатор `theme` не указан, блок `input` по умолчанию становится простым полем ввода:
 
-```bemjson
+```js
 {
     block : 'input',
-    placeholder : 'default'
+    mods : { theme : 'islands', size : 'm' },
+    placeholder : 'Введите ваше имя'
 }
 ```
 
-**simple**
+##### Поле с паролем (модификатор `type` в значении `password`)
 
-```bemjson
-{
-    block : 'input',
-    mods : { theme : 'simple' },
-    placeholder : 'simple'
-}
-```
+Модификатор `type` в значении `password` используется для создания поля для ввода пароля.
 
-**islands**
-
-```bemjson
-{
-    block : 'input',
-    mods : { theme : 'islands', size: 'm' },
-    placeholder : 'islands'
-}
-```
-
-### Размеры `_size`
-
-Реализован только в теме `islands`.
-
-Задает размер всем типам текстовых полей.
-
-Доступно четыре размера реализации блока: **s**, **m**, **l**, **xl**.
-
-<table>
-    <tr>
-        <th>Размер</th>
-        <th>Размер шрифта</th>
-        <th>Высота строки</th>
-    </tr>
-    <tr>
-        <th>S</th>
-        <td>13px</td>
-        <td>24px</td>
-    </tr>
-    <tr>
-        <th>M</th>
-        <td>13px</td>
-        <td>28px</td>
-    </tr>
-    <tr>
-        <th>L</th>
-        <td>15px</td>
-        <td>32px</td>
-    </tr>
-    <tr>
-        <th>XL</th>
-        <td>18px</td>
-        <td>38px</td>
-    </tr>
-</table>
-
-Наглядно показано на примерах ниже:
-
-```bemjson
-{
-    block : 'input',
-    mods : { theme : 'islands', size: 's' },
-    placeholder : 'Small'
-}
-```
-
-```bemjson
-{
-    block : 'input',
-    mods : { theme : 'islands', size: 'm' },
-    placeholder : 'Medium'
-}
-```
-
-```bemjson
-{
-    block : 'input',
-    mods : { theme : 'islands', size: 'l' },
-    placeholder : 'Large'
-}
-```
-
-```bemjson
-{
-    block : 'input',
-    mods : { theme : 'islands', size: 'xl' },
-    placeholder : 'X-Large'
-}
-```
-
-### Типы `_type`
-
-Блок представлен следующими типами:
-
-* текстовая область (`input_type_textarea`)
-
-```bemjson
-{
-    block : 'input',
-    mods : { theme : 'islands', size : 'm', type : 'textarea' },
-    placeholder : 'Text area'
-}
-```
-
-* поле с паролем (`input_type_password`)
-
-```bemjson
+```js
 {
     block : 'input',
     mods : { theme : 'islands', size: 'm', type : 'password' },
-    placeholder : 'Password field'
+    placeholder : 'Введите ваш пароль'
 }
 ```
 
-* поисковая форма (`input_type_search`)
+##### Поле для поиска (модификатор `type` в значении `search`)
 
-```bemjson
+Модификатор `type` в значении `search` используется для создания поля для поиска данных.
+
+```js
 {
     block : 'input',
     mods : { theme : 'islands', size : 'm', type : 'search' },
-    placeholder : 'Search form'
+    placeholder : 'Введите ваш запрос'
 }
 ```
 
-Без указания типа поля блок `input` по умолчанию получает значение `<input type="text"/>`.
+<a name="disabled"></a>
 
-### Состояния блока
+#### Модификатор `disabled`
 
-#### Неактивен `_disabled`
+Допустимое значение: `true`.
 
-В состоянии «неактивен» блок виден, но недоступен для действий пользователя. Такой блок не может получить фокус путем нажатия на клавишу `Tab`, мышью или другими способами. В большинстве случаев к неактивному блоку применяются дополнительные стили, чтобы выделить его на странице.
+Способы использования: `BEMJSON`, `JS`.
 
-```bemjson
+Модификатор `disabled` в значении `true` отвечает за неактивное состояние, при котором блок виден, но недоступен для действий пользователя.
+
+```js
 {
     block : 'input',
     mods : { theme : 'islands', size : 'm', disabled : true },
-    val : 'Неактивно'
+    placeholder : 'Введите ваше имя'
 }
 ```
 
-#### В фокусе `_focused`
+<a name="focused"></a>
 
-Модификатор `focused` в значении `true` автоматически выставляется блоку в момент, когда он находится в фокусе. Например, по нажатию клавиши `Tab` или при щелчке мышью.
+#### Модификатор `focused`
 
-### Очистка содержимого `_has-clear`
+Допустимое значение: `true`.
 
-Модификатор `has-clear` в значении `true` появляется автоматически, если в текстовое поле введены данные. Показывает в инпуте крестик для очистки содержимого (элемент [`clear`](#clear_elem)).
+Способы использования: `BEMJSON`, `JS`, выставляется автоматически при установке курсора в текстовое поле.
 
-## Элементы блока
+Модификатор `focused` в значении `true` отвечает за наличие фокуса на блоке.
 
-Визуально представлен следующими элементами:
+```javascript
+{
+    block : 'input',
+    mods : { theme : 'islands', size : 'm', focused : true },
+    placeholder : 'Введите ваше имя'
+}
+```
 
-<a name="clear_elem"></a>
-### __clear
+<a name="size"></a>
 
-Кнопка очистки содержимого инпута.
+#### Модификатор `size`
 
-### __box
+Допустимые значения для темы `islands`: `'s'`, `'m'`, `'l'`, `'xl'`.
 
-Вспомогательный скрытый элемент. Добавляется блоку на уровне шаблонизатора.
+Способ использования: `BEMJSON`.
 
-Элемент, группирующий нативный контрол `<input>` и дополнительные элементы (например, `clear`).
+Модификатор `size` используется, только если блоку установлен модификатор <a href="#theme">theme</a> в значении `islands`.
 
-### __control
+Задает размер всем типам текстовых полей.
 
-Вспомогательный скрытый элемент. Добавляется блоку на уровне шаблонизатора.
+**s**
+
+```js
+{
+    block : 'input',
+    mods : { theme : 'islands', size: 's' },
+    placeholder : 'Размер s'
+}
+```
+
+**m**
+
+```js
+{
+    block : 'input',
+    mods : { theme : 'islands', size: 'm' },
+    placeholder : 'Размер m'
+}
+```
+
+**l**
+
+```js
+{
+    block : 'input',
+    mods : { theme : 'islands', size: 'l' },
+    placeholder : 'Размер l'
+}
+```
+
+**xl**
+
+```js
+{
+    block : 'input',
+    mods : { theme : 'islands', size: 'xl' },
+    placeholder : 'Размер xl'
+}
+```
+
+<a name="theme"></a>
+
+#### Модификатор `theme`
+
+Допустимое значение: `'islands'`.
+
+Способ использования: `BEMJSON`.
+
+Модификатор `theme` отвечает за стилевое оформление блока.
+
+При выборе модификатора `theme` в значении `islands` необходимо обязательно указывать модификатор <a href="#size">size</a>.
+
+Без указания модификатора `theme` отображается нативный вид контрола.
+
+```js
+{
+    block : 'input',
+    mods : { theme : 'islands', size: 'm', type : 'search' },
+    placeholder : 'Введите ваш запрос'
+}
+```
+
+### Специализированные поля блока
+
+<a name="name"></a>
+
+#### Поле `name`
+
+Определяет значение поля `name`, отправляемое на сервер. Всегда отправляется в паре со значением поля `val`.
+
+<a name="val"></a>
+
+#### Поле `val`
+
+Определяет значение поля `val`, отправляемое на сервер. Всегда отправляется в паре со значением поля `name`.
+
+```js
+{
+    block : 'input',
+    mods : { theme : 'islands', size: 'm', type : 'search' },
+    placeholder : 'Введите ваш запрос',
+    name : 'Статистика',
+    val : 1
+}
+```
+
+<a name="placeholder"></a>
+
+#### Поле `placeholder`
+
+Определяет текст подсказки в текстовом поле.
+
+```js
+{
+    block : 'input',
+    mods : { theme : 'islands', size : 'm' },
+    placeholder : 'Введите ваше имя'
+}
+```
+
+<a name="maxLength"></a>
+
+#### Поле `maxLength`
+
+Определяет максимальное количество вводимых символов. Используется только для <a href="#input">полей ввода</a>.
+
+```js
+{
+    block : 'input',
+    mods : { theme : 'islands', size : 'm' },
+    placeholder : 'Введите ваше имя',
+    maxLength : 20
+}
+```
+
+<a name="autocomplete"></a>
+
+#### Поле `autocomplete`
+
+Отвечает за включение / выключение автозаполнения текстового поля в браузере.
+
+<a name="id"></a>
+#### Поле `id`
+
+Определяет уникальный идентификатор кнопки.
+
+```js
+{
+    block : 'input',
+    mods : { theme : 'islands', size : 'm' },
+    placeholder : 'Введите ваше имя',
+    id : 'name'
+}
+```
+
+<a name="tab"></a>
+
+#### Поле `tabIndex`
+
+Определяет последовательность перехода между текстовыми полями при нажатии на `Tab`.
+
+```js
+{
+    block : 'input',
+    mods : { theme : 'islands', size : 'm' },
+    placeholder : 'Введите ваше имя',
+    tabIndex : 1
+}
+```
