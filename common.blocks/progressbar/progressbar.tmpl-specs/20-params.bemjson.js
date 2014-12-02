@@ -1,5 +1,5 @@
 ({
     block : 'progressbar',
-    mods : { theme : 'hackaton', size : 's', text : true },
+    mods : { theme : 'simple', size : 's', text : true },
     progress : 25
 })

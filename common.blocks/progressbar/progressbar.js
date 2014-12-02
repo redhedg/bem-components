@@ -15,7 +15,7 @@ provide(BEMDOM.decl(this.name, /** @lends progressbar.prototype */{
      * Sets bar's width
      * @param {Number|String} progress
      */
-    setProgress : function(progress) {
+    setVal : function(progress) {
         this._setBarWidth(this.params.progress = this._getProgressNum(progress));
     },
 

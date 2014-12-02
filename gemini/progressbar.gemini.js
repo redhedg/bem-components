@@ -5,8 +5,8 @@ gemini.suite('progressbar', function(root) {
     root.setUrl('desktop.tests/progressbar/gemini/gemini.html');
 
     [
-        'hackaton-s-text',
-        'hackaton-m-no-text-no-progress',
+        'simple-s-text',
+        'simple-m-no-text-no-progress',
         'islands'
     ]
         .forEach(function(test) {

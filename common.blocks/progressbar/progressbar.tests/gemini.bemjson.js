@@ -8,23 +8,23 @@
     ],
     content : [
 
-        { tag : 'h2', content : 'theme-hackaton' },
+        { tag : 'h2', content : 'theme-simple' },
 
         {
             block : 'test',
             content : {
                 block : 'progressbar',
-                mods : { theme : 'hackaton', size : 's', text : true },
+                mods : { theme : 'simple', size : 's', text : true },
                 progress : 25,
-                cls : 'hackaton-s-text'
+                cls : 'simple-s-text'
             }
         },
         {
             block : 'test',
             content : {
                 block : 'progressbar',
-                mods : { theme : 'hackaton', size : 'm' },
-                cls : 'hackaton-m-no-text-no-progress'
+                mods : { theme : 'simple', size : 'm' },
+                cls : 'simple-m-no-text-no-progress'
             }
         },
 

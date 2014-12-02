@@ -18,7 +18,7 @@
             },'<br><br>',
             {
                 block : 'progressbar',
-                mods : { theme: 'hackaton', size : 'm', text : true },
+                mods : { theme: 'simple', size : 'm', text : true },
                 progress : 15
             }
         ]

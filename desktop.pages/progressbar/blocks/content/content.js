@@ -19,7 +19,7 @@ provide(BEMDOM.decl(this.name, {
             tick
                 .on('tick', function(){
                     (i > 100) && (i = 0);
-                    this._progressbar.setProgress(i++);
+                    this._progressbar.setVal(i++);
                 }, this)
                 .start();
         } else {

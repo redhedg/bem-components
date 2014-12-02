@@ -15,7 +15,7 @@ provide(Progressbar.decl({ modName : 'text', modVal : true }, /** @lends progres
      * Sets text
      * @override
      */
-    setProgress : function() {
+    setVal : function() {
         this.__base.apply(this, arguments);
         this.elem('text').text(this.params.progress);
     }

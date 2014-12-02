@@ -10,27 +10,27 @@
         block : 'content',
         attrs : { style : 'width: 400px;' },
         content : [
-            'theme-hackaton, size-s: <br><br>',
+            'theme-simple, size-s: <br><br>',
             {
                 block : 'progressbar',
-                mods : { theme : 'hackaton', size : 's', text : true },
+                mods : { theme : 'simple', size : 's', text : true },
                 progress : 25
             },
-            '<br>theme-hackaton, size-m: <br><br>',
+            '<br>theme-simple, size-m: <br><br>',
             {
                 block : 'progressbar',
-                mods : { theme : 'hackaton', size : 'm', text : true },
+                mods : { theme : 'simple', size : 'm', text : true },
                 progress : 88
             },
-            '<br>theme-hackaton, no progress: <br><br>',
+            '<br>theme-simple, no progress: <br><br>',
             {
                 block : 'progressbar',
-                mods : { theme : 'hackaton', size : 's', text : true }
+                mods : { theme : 'simple', size : 's', text : true }
             },
-            '<br>theme-hackaton, no text (77%): <br><br>',
+            '<br>theme-simple, no text (77%): <br><br>',
             {
                 block : 'progressbar',
-                mods : { theme : 'hackaton', size : 's' },
+                mods : { theme : 'simple', size : 's' },
                 progress : 77
             },
             '<br>theme-islands (35%): <br><br>',
