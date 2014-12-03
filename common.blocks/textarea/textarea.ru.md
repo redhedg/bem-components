@@ -1,201 +1,207 @@
 # textarea
 
-Блок `textarea` (текстовая область).
+Используется для создания текстовой области.
 
-## Специализированные поля блока
+## Краткая информация
 
-Список зарезервированных полей входного BEMJSON:
+### Модификаторы блока
 
-<table>
-    <tr>
-        <th>Поле</th>
-        <th>Тип</th>
-        <th>Описание</th>
-    </tr>
-    <tr>
-        <td>val</td>
-        <td>
-            <code>String</code>
-        </td>
-        <td>Определяет значение (по умолчанию пустое), которое будет отправлено на сервер или получено с помощью клиентских скриптов. На сервер отправляется пара «имя=значение», где имя задается ключом <code>name</code>, а значение — ключом <code>val</code>.</td>
-    </tr>
-    <tr>
-        <td>name</td>
-        <td>
-            <code>String</code>
-        </td>
-        <td>Имя поля ввода, предназначено для того, чтобы обработчик формы мог его идентифицировать.
-            <br>Преобразуется в HTML-атрибут <code>name</code> вложенного блока <code>textarea</code>.</td>
-    </tr>
-    <tr>
-        <td>placeholder</td>
-        <td>
-            <code>String</code>
-        </td>
-        <td>Подсказка в поле ввода.</td>
-    </tr>
-    <tr>
-        <td>id</td>
-        <td>
-            <code>String</code>
-        </td>
-        <td>Уникальный идентификатор блока. Задается вручную. Преобразуется в HTML-атрибут <code>id</code> вложенного блока <code>textarea</code>.</td>
-    </tr>
+| Модификатор | Допустимые значения | Способы использования | Описание |
+| ----------- | ------------------- | -------------------- | -------- |
+| <a href=#disabled>disabled</a> | <code>true</code> | <code>BEMJSON</code>, <code>JS</code> | Неактивное состояние. |
+| <a href=#focused>focused</a> | <code>true</code> | <code>BEMJSON</code>, <code>JS</code> | Фокус на блоке. |
+| <a href=#size>size</a> | <code>'s'</code>, <code>'m'</code>, <code>'l'</code>, <code>'xl'</code> | <code>BEMJSON</code> | Размер текстовой области. Используется только для текстовых областей с модификатором <a href=#theme>theme в значении islands</a>.|
+| <a href=#theme>theme</a> | <code>'islands'</code> | <code>BEMJSON</code> | Стилевое оформление. |
 
-    <tr>
-        <td>maxLength</td>
-        <td>
-            <code>String</code>
-        </td>
-        <td>Определяет максимальное количество вводимых символов.</td>
-    </tr>
-    <tr>
-        <td>tabIndex</td>
-        <td>
-            <code>String</code>
-        </td>
-        <td>Определяет последовательность перехода между полями ввода при нажатии на `Tab`.</td>
-    </tr>
-</table>
+### Специализированные поля блока
 
-При необходимости дополнительные HTML-атрибуты блока могут быть заданы в зарезервированном поле `attrs` в BEMJSON.
+| Поле | Тип | Описание |
+| ---- | --- | -------- |
+| <a href=#name>name</a> | <code>String</code> | Имя текстовой области. |
+| <a href=#val>val</a> | <code>String</code> | Содержание текстовой области при первом открытии. |
+| <a href=#placeholder>placeholder</a> | <code>String</code> | Подсказка в текстовой области. |
+| <a href=#maxLength>maxLength</a> | <code>String</code> | Максимальное количество вводимых символов. |
+| <a href=#id>id</a> | <code>String</code> | Уникальный идентификатор текстовой области. |
+| <a href=#tab>tabIndex</a> | <code>Number</code> | Последовательность перехода между текстовыми областями при нажатии на <code>Tab</code>. |
 
-## Модификаторы блока
+## Обзор блока
 
-### Темы `_theme`
+Блок `textarea` используется для создания текстовой области.
 
-Блок представлен в следующих темах:
+### Модификаторы блока
 
- * simple
- * islands (**Важно:** При выборе темы `islands` необходимо указывать обязательный модификатор [size](#size).)
+<a name="disabled"></a>
 
-Без указания модификатора `theme` отображается [нативный](#native) вид контрола.
+#### Модификатор `disabled`
 
-Наглядно показано на примерах ниже:
+Допустимое значение: `true`.
 
-<a name="native"></a>
-**default**
+Способы использования: `BEMJSON`, `JS`.
+
+Модификатор `disabled` в значении `true` отвечает за неактивное состояние, при котором блок виден, но недоступен для действий пользователя.
 
 ```bemjson
 {
     block : 'textarea',
-    placeholder : 'default'
+    mods : { theme : 'islands', size : 'm', disabled : true },
+    placeholder : 'Ваш текст должен быть здесь'
 }
 ```
 
-**simple**
+<a name="focused"></a>
+
+#### Модификатор `focused`
+
+Допустимое значение: `true`.
+
+Способы использования: `BEMJSON`, `JS`, выставляется автоматически при установке курсора в текстовое поле.
+
+Модификатор `focused` в значении `true` отвечает за наличие фокуса на блоке.
 
 ```bemjson
 {
     block : 'textarea',
-    mods : { theme : 'simple' },
-    placeholder : 'simple'
+    mods : { theme : 'islands', size : 'm', focused : true },
+    placeholder : 'Ваш текст должен быть здесь'
 }
 ```
 
-**islands**
+<a name="size"></a>
 
-```bemjson
-{
-    block : 'textarea',
-    mods : { theme : 'islands', size: 'm' },
-    placeholder : 'islands'
-}
-```
+#### Модификатор `size`
 
-### Размеры `_size`
+Допустимые значения для темы `islands`: `'s'`, `'m'`, `'l'`, `'xl'`.
 
-Реализован только в теме `islands`.
+Способ использования: `BEMJSON`.
 
-Задает размер всем типам текстовых полей.
+Модификатор `size` используется, только если блоку установлен модификатор <a href="#theme">theme</a> в значении `islands`.
 
-Доступно четыре размера реализации блока: **s**, **m**, **l**, **xl**.
-
-<table>
-    <tr>
-        <th>Размер</th>
-        <th>Размер шрифта</th>
-        <th>Высота строки</th>
-    </tr>
-    <tr>
-        <th>S</th>
-        <td>13px</td>
-        <td>24px</td>
-    </tr>
-    <tr>
-        <th>M</th>
-        <td>13px</td>
-        <td>28px</td>
-    </tr>
-    <tr>
-        <th>L</th>
-        <td>15px</td>
-        <td>32px</td>
-    </tr>
-    <tr>
-        <th>XL</th>
-        <td>18px</td>
-        <td>38px</td>
-    </tr>
-</table>
-
-Наглядно показано на примерах ниже:
+**s**
 
 ```bemjson
 {
     block : 'textarea',
     mods : { theme : 'islands', size: 's' },
-    placeholder : 'Small'
+    placeholder : 'Размер s'
 }
 ```
+
+**m**
 
 ```bemjson
 {
     block : 'textarea',
     mods : { theme : 'islands', size: 'm' },
-    placeholder : 'Medium'
+    placeholder : 'Размер m'
 }
 ```
+
+**l**
 
 ```bemjson
 {
     block : 'textarea',
     mods : { theme : 'islands', size: 'l' },
-    placeholder : 'Large'
+    placeholder : 'Размер l'
 }
 ```
+
+**xl**
 
 ```bemjson
 {
     block : 'textarea',
     mods : { theme : 'islands', size: 'xl' },
-    placeholder : 'X-Large'
+    placeholder : 'Размер xl'
 }
 ```
 
-### Состояния блока
+<a name="theme"></a>
 
-#### Неактивен `_disabled`
+#### Модификатор `theme`
 
-В состоянии «неактивен» блок виден, но недоступен для действий пользователя. Такой блок не может получить фокус путем нажатия на клавишу `Tab`, мышью или другими способами. В большинстве случаев к неактивному блоку применяются дополнительные стили, чтобы выделить его на странице.
+Допустимое значение: `'islands'`.
+
+Способ использования: `BEMJSON`.
+
+Модификатор `theme` отвечает за стилевое оформление блока.
+
+При выборе модификатора `theme` в значении `islands` необходимо обязательно указывать модификатор <a href="#size">size</a>.
+
+Без указания модификатора `theme` отображается нативный вид контрола.
 
 ```bemjson
 {
     block : 'textarea',
-    mods : { theme : 'islands', disabled : true },
-    val : 'Неактивно'
+    mods : { theme : 'islands', size: 'm', type : 'search' },
+    placeholder : 'Ваш текст должен быть здесь'
 }
 ```
 
-#### В фокусе `_focused`
+### Специализированные поля блока
 
-Модификатор `focused` в значении `true` автоматически выставляется блоку в момент, когда он находится в фокусе. Например, по нажатию клавиши `Tab` или при щелчке мышью.
+<a name="name"></a>
 
-## Элементы блока
+#### Поле `name`
 
-Визуально представлен следующими элементами:
+Определяет значение поля `name`, отправляемое на сервер. Всегда отправляется в паре со значением поля `val`.
 
+<a name="val"></a>
 
-### __control
+#### Поле `val`
 
-Вспомогательный скрытый элемент. Добавляется блоку на уровне шаблонизатора.
+Определяет содержание текстовой области при первом открытии.
+
+```bemjson
+{
+    block : 'textarea',
+    mods : { theme : 'islands', size: 'm' },
+    placeholder : 'Ваш текст должен быть здесь',
+    name : 'Обратная связь',
+    val : 'Этот текст можно и нужно заменить'
+}
+```
+
+<a name="placeholder"></a>
+
+#### Поле `placeholder`
+
+Определяет текст подсказки в текстовой области.
+
+```bemjson
+{
+    block : 'textarea',
+    mods : { theme : 'islands', size : 'm' },
+    placeholder : 'Ваш текст должен быть здесь'
+}
+```
+
+<a name="maxLength"></a>
+
+#### Поле `maxLength`
+
+Определяет максимальное количество вводимых символов.
+
+```bemjson
+{
+    block : 'textarea',
+    mods : { theme : 'islands', size : 'm' },
+    placeholder : 'Ваш текст должен быть здесь',
+    maxLength : 200
+}
+```
+
+<a name="tab"></a>
+
+#### Поле `tabIndex`
+
+Определяет последовательность перехода между текстовыми областями при нажатии на `Tab`.
+
+```bemjson
+{
+    block : 'textarea',
+    mods : { theme : 'islands', size : 'm' },
+    placeholder : 'Ваш текст должен быть здесь',
+    tabIndex : 1
+}
+```
