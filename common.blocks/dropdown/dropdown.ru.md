@@ -1,160 +1,288 @@
 # dropdown
 
-Блок `dropdown` используется для создания выпадающих элементов и позволяет изменять их состояние, поведение и внешний вид.
+Используется для реализации составного блока, который объединяет всплывающий блок ([popup](../popup/popup.ru.md)) и вызывающий его [управляющий компонент](#modswitcher). Применяется на странице для отображения дополнительной информации по запросу.
 
-Блок состоит из двух компонентов:
+## Краткая информация
 
-* управляющий компонент. В зависимости от значения модификатора `switcher` управляющим компонентом может служить ссылка, псевдоссылка или кнопка.
-* попап (блок [popup](../popup/popup.ru.md)). Управляющий компонент при щелчке мышью вызывает попап (устанавливает для блока `popup` модификатор `visible`). Попап всегда отображается поверх остальных элементов страницы. Щелчок вне зоны попапа автоматически скрывает его (`{ autoclosable : true }`).
+### Модификаторы блока
 
-## Специализированные поля блока
+| Модификатор | Допустимые значения | Способы использования | Описание |
+| ----------- | ------------------- | -------------------- | --------- |
+| <a href=#modswitcher>switcher</a> | <code>'link'</code>, <code>'button'</code> | <code>BEMJSON</code> | Тип управляющего компонента. |
+| <a href=#opened>opened</a> | <code>true</code> | <code>JS</code> | Отображение всплывающего блока на странице. |
+| <a href=#disabled>disabled</a> | <code>true</code> | <code>BEMJSON</code>, <code>JS</code> | Неактивное состояние. |
+| <a href=#theme>theme</a> | <code>'islands'</code> | <code>BEMJSON</code> | Стилевое оформление. |
+| <a href=#size>size</a> | <code>'s'</code>, <code>'m'</code>, <code>'l'</code>, <code>'xl'</code> | <code>BEMJSON</code> | Размер кнопки, вызывающей попап. Используется только для блока <a href="#modswitcherbutton">с модификатором switcher в значении button</a>.|
 
-Список зарезервированных полей входного BEMJSON:
+### Специализированные поля блока
 
-<table>
-    <tr>
-        <th>Поле</th>
-        <th>Тип</th>
-        <th>Описание</th>
-    </tr>
-    <tr>
-        <td>switcher</td>
-        <td><code>String</code></td>
-        <td>Текст управляющего компонента. Может содержать фрагмент BEMJSON, например, если нужно обернуть управляющий компонент в другой блок или передать ему дополнительные параметры. </td>
-    </tr>
-    <tr>
-        <td>popup</td>
-        <td><code>String|BEMJSON</code></td>
-        <td>Текст или фрагмент BEMJSON, отображаемый во всплывающем окне <code>popup</code>. BEMJSON при этом будет преобразован в HTML.</td>
-    </tr>
-</table>
+| Поле | Тип | Описание |
+| ---- | --- | -------- |
+| <a href=#fieldswitcher>switcher</a> | <code>String</code>, <code>BEMJSON</code> | Контент <a href="#modswitcher">управляющего компонента</a>.  |
+| <a href=#popup>popup</a> | <code>String</code>, <code>BEMJSON</code> | Контент всплывающего окна. |
 
-При необходимости дополнительные HTML-атрибуты блока могут быть заданы в зарезервированном поле `attrs` в BEMJSON.
+## Обзор блока
 
-## Модификаторы блока
+### Модификаторы блока
 
-### Темы `_theme`
+<a name="modswitcher"></a>
 
-Блок представлен в следующих темах:
+####  Модификатор `switcher`
 
- * simple
- * islands (**Важно:** При выборе темы `islands` необходимо указывать обязательный модификатор [size](#size).)
+Допустимые значения: `link`, `button`.
 
-Без указания модификатора `theme` отображается [нативный](#default) вид контрола.
+Способ использования: `BEMJSON`.
 
-Наглядно показано на примерах ниже:
+Модификатор `switcher` отвечает за то, какой блок будет использоваться в качестве управляющего компонента.
 
-<a name="default"></a>
-**default**
+<a name="modswitcherlink"></a>
 
-```bemjson
+##### Ссылка как управляющий компонент (модификатор `switcher` в значении `link`)
+
+Модификатор `switcher` в значении `link` используется для представления управляющего компонента блоком [link](../link/link.ru.md).
+
+Нажатие на ссылку вызывает всплывающий блок. Переход по ссылке не осуществляется.
+
+```js
 {
     block : 'dropdown',
-    mods : { switcher : 'link' },
-    switcher : 'Ссылка',
-    popup : 'Hello, world!'
+    mods : { switcher : 'link', theme : 'islands' },
+    switcher : 'Узнать об акциях на сайте',
+    popup : 'Скидка 30% на новую коллекцию. Для активации акции нужно ввести промокод.'
 }
 ```
 
-**simple**
+<a name="modswitcherbutton"></a>
+##### Кнопка как управляющий компонент (модификатор `switcher` в значении `button`)
 
-```bemjson
-{
-    block : 'dropdown',
-    mods : { switcher : 'link', theme : 'simple' },
-    switcher : 'Ссылка',
-    popup : 'Hello, world!'
-}
-```
+Модификатор `switcher` в значении `button` используется для представления управляющего компонента блоком [button](../button/button.ru.md).
 
-**islands**
-
-```bemjson
-{
-    block : 'dropdown',
-    mods : { switcher : 'link', theme : 'islands', size : 'm' },
-    switcher : 'Ссылка',
-    popup : 'Hello, world!'
-}
-```
-
-### Управляющий компонент `_switcher`
-
-Модификатор отвечает за то, какой блок будет использоваться в качестве управляющего компонента:
-
-* `link` — ссылка. В качестве управляющего компонента используется блок `link`.
-* `button` — кнопка. В качестве управляющего компонента используется блок `button`.
-
-```bemjson
+```js
 {
     block : 'dropdown',
     mods : { switcher : 'button', theme : 'islands', size : 'm' },
-    switcher : 'Кнопка',
-    popup : 'Hello, world!'
+    switcher : 'Узнать об акциях на сайте',
+    popup : 'Скидка 30% на новую коллекцию. Для активации акции нужно ввести промокод.'
 }
 ```
 
-### Состояния блока
+<a name="opened"></a>
 
-#### Неактивен `_disabled`
+#### Модификатор `opened`
 
-В состоянии «неактивен» управляющий компонент блока виден, но недоступен для действий пользователя. К неактивному блоку применяются дополнительные стили, чтобы выделить его на странице.
+Допустимое значение: `true`.
 
-Неактивному блоку не могут быть назначены следующие модификаторы:
+Способ использования: `JS`.
 
-* `opened` — `popup` блок не может быть открыт нажатием на управляющий компонент;
-* `visible` — `popup` блок не может быть показан;
-* управляющий компонент не может получить модификатор `focused`;
-* Управляющий компонент `button` не может получить модификатор `hovered` при наведении указателем мыши.
+Модификатор `opened` в значении `true` выставляется блоку программно при появлении попапа.
 
-```bemjson
+<a name="disabled"></a>
+
+#### Модификатор `disabled`
+
+Допустимое значение: `true`.
+
+Способы использования: `BEMJSON`, `JS`.
+
+Модификатор `disabled` в значении `true` отвечает за неактивное состояние, при котором блок виден, но недоступен для действий пользователя.
+
+```js
+{
+    block : 'dropdown',
+    mods : { switcher : 'link', theme : 'islands', disabled : true },
+    switcher : 'Узнать об акциях на сайте',
+    popup : 'Скидка 30% на новую коллекцию. Для активации акции нужно ввести промокод.'
+}
+```
+
+```js
 {
     block : 'dropdown',
     mods : { switcher : 'button', theme : 'islands', size : 'm', disabled : true },
-    switcher : 'Кнопка',
-    popup : 'Hello, world!'
+    switcher : 'Узнать об акциях на сайте',
+    popup : 'Скидка 30% на новую коллекцию. Для активации акции нужно ввести промокод.'
 }
 ```
 
-#### Открыт `_opened`
+<a name="size"></a>
+#### Модификатор `size`
 
-Модификатор `opened` в значении `true` автоматически выставляется блоку при щелчке мышью по управляющему компоненту блока.
+Допустимые значения для темы `islands`: `'s'`, `'m'`, `'l'`, `'xl'`.
 
-```bemjson
+Способ использования: `BEMJSON`.
+
+Задает размер управляющему элементу, если блоку выставлен <a href="#modswitcherbutton">модификатор switcher в значении button</a>.
+
+Модификатор `size` используется, только если блоку установлен модификатор <a href="#theme">theme</a> в значении `islands`.
+
+Модификатор `size` может быть задан:
+
+* блоку `dropdown` в целом
+
+```js
 {
     block : 'dropdown',
-    mods : { switcher : 'button', theme : 'islands', size : 'm', opened : true },
-    switcher : 'Кнопка',
-    popup : 'Hello, world!'
+    mods : { switcher : 'button', theme : 'islands', size : 'm' },
+    switcher : 'Узнать об акциях на сайте',
+    popup : 'Скидка 30% на новую коллекцию. Для активации акции нужно ввести промокод.'
 }
 ```
 
-## BEMJSON в атрибутах `switcher` и `popup`
+* управляющему элементу, если в <a href="#fieldswitcher">поле switcher</a> пробрасывается BEMJSON блока [button](../button/button.ru.md).
 
-Атрибуты управляющего компонента и попапа могут содержать фрагмент БЭМ-дерева. Например, если нужно обернуть управляющий компонент в другой блок или передать ему дополнительные параметры.
-
-Например, можно сделать кнопку управляющего компонента "залипающей":
-
-```bemjson
+```js
 {
     block : 'dropdown',
     mods : { switcher : 'button', theme : 'islands', size : 'm' },
     switcher : {
         block : 'button',
-        mods : { togglable : 'true' },
-        text : 'custom button'
+        mods : { togglable : 'check' },
+        theme : 'islands',
+        size : 'm',
+        text : 'Узнать об акциях на сайте'
     },
-    popup : 'Popup message'
+    popup : 'Скидка 30% на новую коллекцию. Для активации акции нужно ввести промокод.'
 }
 ```
 
-Или создать на основе блока выпадающий селект:
+<a name="theme"></a>
+#### Модификатор `theme`
 
-```bemjson
+Допустимое значение: `islands`.
+
+Способы использования: `BEMJSON`.
+
+Модификатор `theme` отвечает за стилевое оформление блока.
+
+Если управляющий компонент реализован <a href="#modswitcherbutton">кнопкой</a>, то при выборе модификатора `theme` в значении `islands` необходимо указывать модификатор <a href="#size">size</a>.
+
+Без указания модификатора `theme` отображается нативный вид контрола.
+
+Модификатор `theme` может быть задан:
+
+* блоку `dropdown` в целом
+
+```js
+{
+    block : 'dropdown',
+    mods : { switcher : 'link', theme : 'islands' },
+    switcher : 'Узнать об акциях на сайте',
+    popup : 'Скидка 30% на новую коллекцию. Для активации акции нужно ввести промокод.'
+}
+```
+
+```js
+{
+    block : 'dropdown',
+    mods : { switcher : 'button', theme : 'islands', size : 'm' },
+    switcher : 'Узнать об акциях на сайте',
+    popup : 'Скидка 30% на новую коллекцию. Для активации акции нужно ввести промокод.'
+}
+```
+
+* управляющему элементу, если в <a href="#fieldswitcher">поле switcher</a> пробрасывается BEMJSON блока [link](../link/link.ru.md) или [button](../button/button.ru.md).
+
+```js
+{
+    block : 'dropdown',
+    mods : { switcher : 'link' },
+    switcher : {
+        block : 'link',
+        mods : { pseudo : true, theme : 'islands' },
+        content : 'Узнать об акциях на сайте'
+    },
+    popup : 'Скидка 30% на новую коллекцию. Для активации акции нужно ввести промокод.'
+}
+```
+
+```js
+{
+    block : 'dropdown',
+    mods : { switcher : 'button' },
+    switcher : {
+        block : 'button',
+        mods : { togglable : 'check', theme : 'islands', size : 'm', },
+        text : 'Узнать об акциях на сайте' },
+    popup : 'Скидка 30% на новую коллекцию. Для активации акции нужно ввести промокод.'
+}
+```
+
+### Специализированные поля блока
+
+<a name="fieldswitcher"></a>
+
+#### Поле `switcher`
+
+Определяет контент <a href="#modswitcher">управляющего компонента</a>.
+
+Допустимые значения: строка или фрагмент `BEMJSON`.
+
+```js
+{
+    block : 'dropdown',
+    mods : { switcher : 'link', theme : 'islands' },
+    switcher : {
+        block : 'link',
+        mods : { pseudo : true, },
+        content : 'Узнать об акциях на сайте'
+    },
+    popup : 'Скидка 30% на новую коллекцию. Для активации акции нужно ввести промокод.'
+}
+```
+
+```js
+{
+    block : 'dropdown',
+    mods : { switcher : 'button', theme : 'islands', size : 'm' },
+    switcher : {
+        block : 'button',
+        mods : { togglable : 'check' },
+        text : 'Узнать об акциях на сайте'
+    },
+    popup : 'Скидка 30% на новую коллекцию. Для активации акции нужно ввести промокод.'
+}
+```
+
+<a name="popup"></a>
+
+#### Поле `popup`
+
+Определяет контент всплывающего окна.
+
+Допустимые значения: строка или фрагмент `BEMJSON`.
+
+```js
+{
+    block : 'dropdown',
+    mods : { switcher : 'link', theme : 'islands' },
+    switcher : 'Узнать об акциях на сайте',
+    popup : {
+        block : 'button',
+        mods : { theme : 'islands', size : 'm' },
+        text : 'Скидка 30%'
+    }
+}
+```
+
+```js
+{
+    block : 'dropdown',
+    mods : { switcher : 'button', theme : 'islands', size : 'm' },
+    switcher : 'Узнать об акциях на сайте',
+    popup : {
+        block : 'link',
+        mods : { theme : 'islands' },
+        url : 'http://market.yandex.ru/',
+        content : 'Скидки здесь!'
+    }
+}
+```
+
+```js
 {
     block : 'dropdown',
     mods : {
-        switcher : 'Кнопка',
+        switcher : 'button',
         theme : 'islands',
         size : 'xl'
     },
